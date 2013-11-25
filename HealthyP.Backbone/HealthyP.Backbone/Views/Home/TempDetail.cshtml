@@ -1,0 +1,132 @@
+﻿@model dynamic
+
+<div class="row">
+    <section class="col-lg-12">
+        
+        <ol class="breadcrumb">
+            <li><a href="#">Patients</a></li>
+            <li class="active">Patient 1</li>
+        </ol>
+
+        <header>
+            <div class="page-header">
+                <h1>Patient 1 - Details</h1>
+            </div>
+        </header>
+
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label for="exampleInputEmail1" class="label-required">First Name</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="First Name">
+                </div>
+                <div class="col-md-3">
+                    <label for="exampleInputEmail1">Last Name</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                </div>
+                <div class="col-md-4">
+                    <label for="exampleInputEmail1" class="label-required">Email</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-6">
+                    <label for="exampleInputEmail1" class="label-required">Image Url</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+
+                </div>
+                <div class="col-md-1">
+                    <label for="exampleInputEmail1" class="label-required text-muted">(prev)</label>
+                    <img class="profile-preview" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACDUlEQVR4Xu2Yz6/BQBDHpxoEcfTjVBVx4yjEv+/EQdwa14pTE04OBO+92WSavqoXOuFp+u1JY3d29rvfmQ9r7Xa7L8rxY0EAOAAlgB6Q4x5IaIKgACgACoACoECOFQAGgUFgEBgEBnMMAfwZAgaBQWAQGAQGgcEcK6DG4Pl8ptlsRpfLxcjYarVoOBz+knSz2dB6vU78Lkn7V8S8d8YqAa7XK83ncyoUCjQej2m5XNIPVmkwGFC73TZrypjD4fCQAK+I+ZfBVQLwZlerFXU6Her1eonreJ5HQRAQn2qj0TDukHm1Ws0Ix2O2260RrlQqpYqZtopVAoi1y+UyHY9Hk0O32w3FkI06jkO+74cC8Dh2y36/p8lkQovFgqrVqhFDEzONCCoB5OSk7qMl0Gw2w/Lo9/vmVMUBnGi0zi3Loul0SpVKJXRDmphvF0BOS049+n46nW5sHRVAXMAuiTZObcxnRVA5IN4DJHnXdU3dc+OLP/V63Vhd5haLRVM+0jg1MZ/dPI9XCZDUsbmuxc6SkGxKHCDzGJ2j0cj0A/7Mwti2fUOWR2Km2bxagHgt83sUgfcEkN4RLx0phfjvgEdi/psAaRf+lHmqEviUTWjygAC4EcKNEG6EcCOk6aJZnwsKgAKgACgACmS9k2vyBwVAAVAAFAAFNF0063NBAVAAFAAFQIGsd3JN/qBA3inwDTUHcp+19ttaAAAAAElFTkSuQmCC">
+
+                </div>
+            </div>
+            <div class="form-group">
+
+
+
+                <div class="clearfix"></div>
+                <div class="col-md-10">
+
+                    <h3>Insurance <button class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</button></h3>
+
+
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
+                                    <th class="col-md-4"><a href="#">Date</a></th>
+                                    <th class="col-md-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        <tr>
+
+                                            <td>Payor1</td>
+                                            <td>12/12/2013</td>
+                                            <td class="grid-actions"><a href="edit" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; <a href="edit"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                        </tr>
+
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ul class="pager">
+                        <li class="previous disabled"><a href="#">&larr; Older</a></li>
+                        <li class="next"><a href="#">Newer &rarr;</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-default btn-lg btn-primary">Submit</button>
+        </form>
+    </section>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Insurance</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label> Payor</label>
+                            <select class="form-control">
+                                <option>Payor1</option>
+                                <option>Payor2</option>
+                                <option>Payor3</option>
+                                <option>Payor4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label> Date</label>
+                            <input type="date" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label> Notes</label>
+                           <textarea class="form-control" rows="10"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
