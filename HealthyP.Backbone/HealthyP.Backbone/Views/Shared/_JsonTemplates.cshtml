@@ -1,0 +1,21 @@
+﻿<script type="text/template" id="tmpl-message-error">
+    <div class="alert alert-error">
+        <%if(lead){%>
+        <strong><%=lead%></strong>
+        <%}%>
+        <%=message%>
+    </div>
+    <%if(!isUserError){%>
+    <section class="well well-small">
+        <p><span class="lead">We're sorry!</span> Please click <a data-href="/"><strong>here</strong></a> to return to the home page.</p>
+    </section>
+    <%}%>
+</script>
+
+<script type="text/template" id="tmpl-message-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <%if(lead){%>
+    <strong><%=lead%></strong>
+    <%}%>
+    <%=message%>
+</script>

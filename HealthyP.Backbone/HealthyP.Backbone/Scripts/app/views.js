@@ -3,6 +3,10 @@ healthyP.views = healthyP.views || {};
 
 (function($, _, Backbone, healthyP) {
 
+    
+
+
+    //todo get rid of this and just pass constants (those can be mocked)
     healthyP.views.BaseView = Backbone.View.extend({
         _setTemplateFuncs: function(options, optionNames) {
 
@@ -19,8 +23,6 @@ healthyP.views = healthyP.views || {};
 
                 this[optionName] = templateVal;
             }
-
-
         }
     });
 

@@ -5,7 +5,9 @@
 
     healthyP.templates = healthyP.templates ||
     {
-        patientSummary: _.template($('#tmpl-patient-summary').html())
+        patientSummary: _.template($('#tmpl-patient-summary').html()),
+        messageError: _.template($('#tmpl-message-error').html()),
+        messageSuccess: _.template($('#tmpl-message-success').html())
     };
 
 
