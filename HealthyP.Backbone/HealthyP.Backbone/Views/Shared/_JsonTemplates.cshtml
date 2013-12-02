@@ -1,5 +1,5 @@
 ﻿<script type="text/template" id="tmpl-message-error">
-    <div class="alert alert-error">
+    <div class="alert alert-warning">
         <%if(lead){%>
         <strong><%=lead%></strong>
         <%}%>
@@ -7,7 +7,7 @@
     </div>
     <%if(!isUserError){%>
     <section class="well well-small">
-        <p><span class="lead">We're sorry!</span> Please click <a data-href="/"><strong>here</strong></a> to return to the home page.</p>
+        <p><span class="lead">We're sorry!</span> Please click <a href="/"><strong>here</strong></a> to return to the home page.</p>
     </section>
     <%}%>
 </script>
@@ -18,4 +18,35 @@
     <strong><%=lead%></strong>
     <%}%>
     <%=message%>
+</script>
+
+<script type="text/template" id="tmpl-patient-summary">
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="<%=pic%>">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading"> <a href="#patient/edit/<%=id%>"><%=name%> &raquo;</a></h4>
+            <p><%=desc%></p>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="tmpl-patient-summaries">
+    <header class="page-header">
+        <h1>Patients <a class="btn btn-default  pull-right" href="#patient/edit"><i class="glyphicon glyphicon-plus"></i> Add</a></h1>
+    </header>
+    <ul class="pager">
+        <li class="previous disabled" data-loader="true"><a href="#">&larr; Older</a></li>
+        <li class="next" data-loader="true"><a href="#">Newer &rarr;</a></li>
+    </ul>
+    <ul class="list-unstyled patient-summaries"></ul>
+    <ul class="pager">
+        <li class="previous disabled" data-loader="true"><a href="#">&larr; Older</a></li>
+        <li class="next" data-loader="true"><a href="#">Newer &rarr;</a></li>
+    </ul>
+</script>
+
+<script type="text/template" id="tmpl-comm-progress">
+   
 </script>

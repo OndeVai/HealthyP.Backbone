@@ -1,4 +1,5 @@
 ﻿var healthyP = healthyP || {};
+healthyP.views = healthyP.views || {};
 (function ($, _, Backbone, healthyP) {
 
     var channel = healthyP.channel;
@@ -8,7 +9,7 @@
     healthyP.views.MessageError = Backbone.View.extend({
         tagName: 'section',
         className: 'error-gen',
-        template: healthyP.templates.messageError,
+        template: _.template($('#tmpl-message-error').html()),
 
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
@@ -20,7 +21,7 @@
     healthyP.views.MessageSuccess = Backbone.View.extend({
         tagName: 'section',
         className: 'alert alert-success success-gen',
-        template: healthyP.templates.messageSuccess,
+        template: _.template($('#tmpl-message-success').html()),
 
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
@@ -42,6 +43,8 @@
 
             this.listenTo(channel, 'app:ui:view:changed', this.render);
             this.listenTo(channel, 'app:comm:err', this._renderError);
+            this.listenTo(channel, 'app:comm:start', this._renderProgress);
+            this.listenTo(channel, 'app:comm:stop', this._clearProgress);
             this.listenTo(channel, 'app:comm:success', this._clearError);
             this.listenTo(channel, 'app:comm:err:unauthorized', this._handleAuth);
             this.listenTo(channel, 'app:comm:err:notFound', this._renderNotFound);
@@ -54,10 +57,14 @@
             this._clearError();
 
 
-            var newPanelEnd = '1';
-            var oldPanelEnd = '0';
+            var newPanelEnd = true;
+            var oldPanelEnd = false;
 
-            var newPanel = $('<div class="row cbody"></div>').panelTransition(oldPanelEnd);
+            var newPanel = view.render().$el
+                          .addClass('cbody new')
+                          .panelTransition(oldPanelEnd)
+                          .appendTo(this.$el);
+
 
             this._setMainElements(view, newPanel);
 
@@ -66,6 +73,28 @@
 
             this._updatePanels(oldPanel, newPanel, oldPanelEnd, newPanelEnd, view);
             this._clearModal();
+            this._scrollTop();
+        },
+
+        _renderProgress: function () {
+
+
+            this._clearError();
+            this._clearSuccess();
+            $('body').addClass('loading-main');
+            this.$el.find('[data-loader="true"]').loading(true);
+        },
+
+        _clearProgress: function () {
+
+            $('.loading').loading(false);
+            $('body').removeClass('loading-main');
+
+        },
+
+        _setMainElements: function (view, newPanel) {
+
+            //todo breadcrumb and doc title
 
         },
 
@@ -74,7 +103,11 @@
             window.setTimeout(function () {
                 oldPanel.panelTransition(oldPanelEnd);
                 newPanel.panelTransition(newPanelEnd);
+                console.log(Modernizr);
+
                 self._cleanupViews(view, newPanel, oldPanel);
+
+
 
             }, 0);
         },
@@ -83,7 +116,7 @@
             _.extend(model, { lead: (model.lead || 'Whoops!') });
             var errorModel = new Backbone.Model(model);
             var errorView = new MessageView({ model: errorModel }).render().$el;
-            self.$el.prepend(errorView);
+            this.$el.prepend(errorView);
 
             callback && callback();
 
@@ -96,12 +129,12 @@
             var initial = this.$('#initial');
             if (initial.length) initial.remove();
 
-            this._renderMessage(healthyP.MessageError, err, errorViewPath, function () {
+            this._renderMessage(healthyP.views.MessageError, err, errorViewPath, function () {
                 self._clearModal();
                 self._scrollTop();
             });
 
-            $('.loading').setLoadingState(false);
+            this._clearProgress();
         },
 
         _clearModal: function () {
@@ -120,7 +153,7 @@
         _renderSuccessMessage: function (msg) {
 
             this._clearSuccess();
-            this._renderMessage(healthyP.MessageError, msg, successViewPath);
+            this._renderMessage(healthyP.views.MessageSuccess, msg, successViewPath);
         },
         _clearError: function () {
             this.$('.error-gen').remove();
@@ -128,14 +161,7 @@
         _clearSuccess: function () {
             this.$('.success-gen').remove();
         },
-        _setMainElements: function (view, newPanel) {
 
-            //set content
-            this.$el.append(newPanel);
-            view.$el.addClass('col-md-12');
-            newPanel.html(view.el);
-
-        },
         _closeCurrentView: function () {
             if (this.currentView) {
                 this.currentView.stopListening(channel);
@@ -154,6 +180,11 @@
 
         _handleAuth: function () {
             document.location = '/login';
+        },
+
+        _scrollTop: function () {
+            $("html, body").animate({ scrollTop: 0 }, 200);
+
         }
     });
 

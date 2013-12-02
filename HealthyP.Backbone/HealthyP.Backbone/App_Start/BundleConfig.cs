@@ -17,12 +17,28 @@ namespace HealthyP.Backbone
             bundles.Add(new ScriptBundle("~/bundles/libs").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.validate*",
-                        "~/Scripts/bootstrap.js"));
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/underscore.js",
+                        "~/Scripts/backbone.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/app/extensions.js"
+                       
+
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/testing").Include(
+                        "~/Scripts/jquery.mockjax.js",
+                         "~/Scripts/app/mockdata.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Scripts/app/models.js",
                         "~/Scripts/views",
-                        "~/Scripts/app"));
+                        "~/Scripts/app/models.js",
+                        "~/Scripts/app/views.js",
+                        "~/Scripts/app/appView.js",
+                        "~/Scripts/app/router.js",
+                        "~/Scripts/app/app.js"
+                        ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

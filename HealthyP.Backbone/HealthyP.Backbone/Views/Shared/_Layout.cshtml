@@ -8,7 +8,9 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
+<body class="loading-main">
+
+   
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -22,24 +24,41 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                  
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        <div id="wrapper">
-            @RenderBody()
+    <div class="container">
+        <div class="row">
+            <div id="wrapper" class="col-md-12">
+                @RenderBody()
+            </div>
+
+
+
         </div>
-       
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+    </div>
+    
+    <div class="comm-progress" style="">
+        <div class="body">
+
+            <h6 class="message"><strong>Loading</strong></h6>
+            <div class="progress progress-striped active" style="">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 200px;">
+                    <span class="sr-only">100% Complete</span>
+                </div>
+            </div>
+
+        </div>
     </div>
 
+    @Html.Partial("_JsonTemplates")
     @Scripts.Render("~/bundles/libs")
+    @Scripts.Render("~/bundles/testing")
+
     @Scripts.Render("~/bundles/app")
     @RenderSection("scripts", required: false)
 </body>

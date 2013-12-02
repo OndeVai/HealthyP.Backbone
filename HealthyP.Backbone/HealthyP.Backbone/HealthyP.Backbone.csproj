@@ -184,7 +184,6 @@
     <Content Include="Scripts\app\appView.js" />
     <Content Include="Scripts\app\extensions.js" />
     <Content Include="Scripts\app\models.js" />
-    <Content Include="Scripts\app\constants.js" />
     <Content Include="Scripts\app\router.js" />
     <Content Include="Scripts\app\views.js" />
     <Content Include="Scripts\backbone.js" />
@@ -193,7 +192,9 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.mockjax.js" />
     <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\app\mockdata.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\_references.js" />

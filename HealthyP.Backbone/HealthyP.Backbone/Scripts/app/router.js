@@ -1,6 +1,7 @@
 var healthyP = healthyP || {};
 (function ($, _, Backbone, healthyP) {
 
+    var channel = healthyP.channel;
 
     healthyP.AppRouter = Backbone.Router.extend({
 
@@ -8,7 +9,7 @@ var healthyP = healthyP || {};
             '': 'showPatientSummaries',
             'patient/add': 'showPatientEdit',
             'patient/edit/:id': 'showPatientEdit',
-            'gallery/*url': 'showPatientSummaries'
+            'patient-summaries*url': 'showPatientSummaries'
         },
 
         initialize: function () {
@@ -20,9 +21,11 @@ var healthyP = healthyP || {};
         showPatientSummaries: function (url) {
 
             var self = this;
-            var patientSummaries = new healthyP.PatientSummaries({ url: url });
+            var patientSummaries = new healthyP.PatientSummaries([], { url: url });
+
+            console.log(patientSummaries.url);
             patientSummaries.fetch().done(function () {
-                var patientSummariesView = new healthyP.view.PatientSummaries({ collection: patientSummaries });
+                var patientSummariesView = new healthyP.views.PatientSummaries({ collection: patientSummaries });
                 self._triggerRender(patientSummariesView);
             });
         },
@@ -49,5 +52,4 @@ var healthyP = healthyP || {};
 
 
     });
-
-});
+})(window.jQuery, window._, window.Backbone, healthyP);

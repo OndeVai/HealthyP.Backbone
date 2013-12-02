@@ -2,9 +2,10 @@
 
 (function ($, _, Backbone, healthyP) {
     
-    //*****jquery plugins*******//
+    //*****jquery plugins & extensions*******//
 
     var disabled = 'disabled';
+    var loading = 'loading';
 
     $.fn.enabled = function (enabled) {
 
@@ -22,19 +23,58 @@
 
         });
     };
+    
+    $.fn.loading = function (isLoading) {
 
-    $.fn.panelTransition = function (x) {
 
         return this.each(function () {
 
-            $(this).css('opacity', x);
+            var $this = $(this);
+            $this.enabled(!isLoading);
+            if (!isLoading)
+                $this.removeClass(loading);
+            else
+                $this.addClass(loading);
+
 
         });
+    };
+
+    $.fn.panelTransition = function (isIn) {
+
+        var inClass = 'in', outClass = 'out';
+
+        return this.each(function () {
+
+            var $that = $(this);
+            if (isIn) {
+                $that.removeClass(outClass)
+                    .addClass(inClass);
+            }
+            else {
+                $that.removeClass(inClass)
+                    .addClass(outClass);
+            }
+
+        });
+    };
+    
+    $.parseJsonSafe = function (val) {
+        try {
+            var response = $.parseJSON(val);
+            if (typeof response == 'object') {
+                return response;
+            }
+            return null;
+        } catch (e) {
+            return null;
+        }
     };
 
     //*****jquery ajax*******//
 
     healthyP.channel = _.extend({}, Backbone.Events);
+    var channel = healthyP.channel;
 
     var parseAndTrigger = function (jqXHR, ajaxSettings, events, isUserError) {
         var responseText = jqXHR.responseText;
@@ -110,6 +150,16 @@
     });
 
 
+    //*****bootstrap*******//
+    
+    //fix the pager and other controls that are disabled
+    $(document).on('click touchstart', '.disabled, .disabled a', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        e.stopPropagation();
+    });
+
+
     //*****backbone*******//
     Backbone.Router.prototype.trackPageView = function (account) {
 
@@ -134,6 +184,7 @@
             this.onClose();
         }
     };
+
 
 
 

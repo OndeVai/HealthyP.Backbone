@@ -17,6 +17,12 @@
     healthyP.PatientSummaries = Backbone.Collection.extend({
 
         url: '/api/patients/summaries',
+        
+        initialize : function(models, options) {
+            options = options || {};
+            if (options.url)
+                this.url = options.url;
+        },
         model: healthyP.PatientSummary,
         
         getPagerLinks: function () {

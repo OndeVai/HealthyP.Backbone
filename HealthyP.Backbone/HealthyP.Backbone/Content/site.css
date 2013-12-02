@@ -3,39 +3,51 @@
     padding-bottom: 20px;
 }
 
+body .comm-progress {
+    position: fixed;
+    width: 100%;
+    top: 25%;
+    z-index: 99;
+    text-align: center;
+    display: none;
+}
+
+body .comm-progress .body {
+    margin: 0 auto;
+    width: 200px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px dotted #f7f7f7;
+}
+
+body .comm-progress .progress {
+    width: 100%;
+}
+
+body .comm-progress .progress .progress-bar {
+    width: 100%;
+}
+
+body.loading-main .comm-progress {
+    display: block;
+}
+
+body.loading-main .cbody {
+    opacity: .5;
+}
+
 .cbody {
     position: absolute;
+    width: 100%;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.cbody.in {
+    opacity: 1;
 }
 
-/* styles for validation helpers */
-.field-validation-error {
-    color: #b94a48;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-input.input-validation-error {
-    border: 1px solid #b94a48;
-}
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
-}
-
-.validation-summary-errors {
-    color: #b94a48;
-}
-
-.validation-summary-valid {
-    display: none;
+.cbody.out {
+    opacity: 0;
 }
 
 ul.patients li {

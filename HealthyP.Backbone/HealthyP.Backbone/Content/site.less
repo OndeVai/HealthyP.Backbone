@@ -1,50 +1,71 @@
-﻿body {
+﻿
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 
+    .comm-progress {
+        position: fixed;
+        width: 100%;
+        top: 25%;
+        z-index: 99;
+        text-align: center;
+
+
+        .body {
+            margin: 0 auto;
+            width: 200px;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px dotted #f7f7f7;
+        }
+
+        .progress {
+            width: 100%;
+
+            .progress-bar {
+                width: 100%;
+            }
+        }
+
+        .message {
+        }
+
+        display: none;
+    }
+
+    &.loading-main {
+        .comm-progress {
+            display: block;
+        }
+
+        .cbody {
+            opacity: .5;
+          
+        }
+    }
 }
 
 .cbody {
     position: absolute;
+    width: 100%;
+
+    &.in {
+        opacity: 1;
+    }
+
+    &.out {
+        opacity: 0;
+    }
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-
-/* styles for validation helpers */
-.field-validation-error {
-    color: #b94a48;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-input.input-validation-error {
-    border: 1px solid #b94a48;
-}
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
-}
-
-.validation-summary-errors {
-    color: #b94a48;
-}
-
-.validation-summary-valid {
-    display: none;
-}
 
 
 ul {
     &.patients {
         li {
-            margin-top:15px;
+            margin-top: 15px;
         }
     }
 }
@@ -53,7 +74,7 @@ ul {
 
 
 
+
 .table tbody > tr > td.grid-actions {
-    text-align:right;
- 
+    text-align: right;
 }

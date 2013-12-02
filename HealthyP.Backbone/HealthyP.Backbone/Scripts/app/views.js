@@ -8,32 +8,15 @@ healthyP.views = healthyP.views || {};
 
     //todo get rid of this and just pass constants (those can be mocked)
     healthyP.views.BaseView = Backbone.View.extend({
-        _setTemplateFuncs: function(options, optionNames) {
-
-            options = options || {};
-            optionNames = optionNames || ['template'];
-
-            for (var i = 0; i < optionNames.length; i++) {
-
-                var optionName = optionNames[i];
-                var templateVal = options[optionName];
-                if (!templateVal) {
-                    throw new Error(optionName + ' must be passed as an option');
-                }
-
-                this[optionName] = templateVal;
-            }
-        }
+       
     });
 
     healthyP.views.PatientSummary = healthyP.views.BaseView.extend({
         events: {
             
         },
-        initialize: function(options) {
-
-            this._setTemplateFuncs(options);
-        },
+        template : _.template($('#tmpl-patient-summary').html()),
+       
         render: function() {
 
             var modelJson = this.model.toJSON();
@@ -52,13 +35,12 @@ healthyP.views = healthyP.views || {};
         events: {
             
         },
+        template: _.template($('#tmpl-patient-summaries').html()),
         initialize: function(options) {
 
             if (this.collection) {
                 this.listenTo(this.collection, 'refresh');
             }
-
-            this._setTemplateFuncs(options, ['template', 'templateItem']);
 
             _.bindAll(this, 'render', '_renderPaging', '_renderItem');
         },
@@ -88,11 +70,19 @@ healthyP.views = healthyP.views || {};
                 $pagePrev = $paging.find('.previous'),
                 $pageNext = $paging.find('.next');
 
-            $pagePrev.enabled(paging.prev);
-            $pageNext.enabled(paging.next);
 
-            $pagePrev.find('a').attr('href', '#' + paging.prev);
-            $pageNext.find('a').attr('href', '#' + paging.next);
+            this._renderPagingItem.call($pagePrev, paging.prev);
+            this._renderPagingItem.call($pageNext, paging.next);
+        },
+        
+        _renderPagingItem: function(pagerData) {
+            var $that = this;
+            $that.enabled(pagerData);
+            if(pagerData) 
+                $that.find('a').attr('href', '#patient-summaries' + pagerData.href);
+
+                
+           
         },
         
         _refresh: function() {
