@@ -53,7 +53,7 @@ describe("PatientSummaries", function () {
             
             patentSummaries.parse(serverData);
 
-            expect(patentSummaries._links).toEqual(serverData.links);
+            expect(patentSummaries._paging).toEqual(serverData.links);
 
         });
         
@@ -61,7 +61,7 @@ describe("PatientSummaries", function () {
             
             patentSummaries.parse(serverData);
 
-            expect(patentSummaries._links).toEqual(serverData.links);
+            expect(patentSummaries._paging).toEqual(serverData.links);
 
         });
        
@@ -73,7 +73,7 @@ describe("PatientSummaries", function () {
         it("should have prev and next populated", function () {
             
             patentSummaries.parse(serverData);
-            var paging = patentSummaries.getPagerLinks();
+            var paging = patentSummaries.getPaging();
             expect(paging.prev).toEqual(serverData.links['prev']);
             expect(paging.next).toEqual(serverData.links['next']);
 

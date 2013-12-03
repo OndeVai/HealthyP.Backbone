@@ -3,8 +3,7 @@ healthyP.views = healthyP.views || {};
 (function ($, _, Backbone, healthyP) {
 
     var channel = healthyP.channel;
-    var errorViewPath = 'views/a_shared/alertErrorUnhandled';
-    var successViewPath = 'views/a_shared/alertSuccess';
+  
 
     healthyP.views.MessageError = Backbone.View.extend({
         tagName: 'section',
@@ -55,7 +54,7 @@ healthyP.views = healthyP.views || {};
         render: function (view) {
 
             this._clearError();
-
+            this._clearProgress();
 
             var newPanelEnd = true;
             var oldPanelEnd = false;
@@ -111,7 +110,7 @@ healthyP.views = healthyP.views || {};
 
             }, 0);
         },
-        _renderMessage: function (MessageView, model, template, callback) {
+        _renderMessage: function (MessageView, model,  callback) {
 
             _.extend(model, { lead: (model.lead || 'Whoops!') });
             var errorModel = new Backbone.Model(model);
@@ -129,7 +128,7 @@ healthyP.views = healthyP.views || {};
             var initial = this.$('#initial');
             if (initial.length) initial.remove();
 
-            this._renderMessage(healthyP.views.MessageError, err, errorViewPath, function () {
+            this._renderMessage(healthyP.views.MessageError, err,  function () {
                 self._clearModal();
                 self._scrollTop();
             });
@@ -153,7 +152,7 @@ healthyP.views = healthyP.views || {};
         _renderSuccessMessage: function (msg) {
 
             this._clearSuccess();
-            this._renderMessage(healthyP.views.MessageSuccess, msg, successViewPath);
+            this._renderMessage(healthyP.views.MessageSuccess, msg);
         },
         _clearError: function () {
             this.$('.error-gen').remove();

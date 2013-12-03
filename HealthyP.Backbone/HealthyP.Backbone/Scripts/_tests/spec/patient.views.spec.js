@@ -183,7 +183,7 @@ describe("views.PatientSummaries", function () {
             var testData = [{ dummy1: 'one' }, { dummy1: 'two' }];
 
             testPatients = new Backbone.Collection(testData);
-            testPatients.getPagerLinks = function () {
+            testPatients.getPaging = function () {
                 return {
                     next: 'n',
                     prev: 'p'
@@ -240,8 +240,8 @@ describe("views.PatientSummaries", function () {
                     expect($prev.hasClass('disabled')).toBe(prev);
                     expect($next.hasClass('disabled')).toBe(next);
 
-                    expect($prev.find('a').attr('href')).toBe('#' + testPatients.getPagerLinks().prev);
-                    expect($next.find('a').attr('href')).toBe('#' + testPatients.getPagerLinks().next);
+                    expect($prev.find('a').attr('href')).toBe('#' + testPatients.getPaging().prev);
+                    expect($next.find('a').attr('href')).toBe('#' + testPatients.getPaging().next);
 
                 };
 
@@ -255,7 +255,7 @@ describe("views.PatientSummaries", function () {
             it("should have correct paging (no prev)", function () {
 
 
-                testPatients.getPagerLinks = function () {
+                testPatients.getPaging = function () {
                     return {
                         next: 'n',
                         prev: null
@@ -266,7 +266,7 @@ describe("views.PatientSummaries", function () {
 
             it("should have correct paging (no next)", function () {
 
-                testPatients.getPagerLinks = function () {
+                testPatients.getPaging = function () {
                     return {
                         next: null,
                         prev: 'p'

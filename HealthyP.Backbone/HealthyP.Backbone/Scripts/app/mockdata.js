@@ -1,4 +1,4 @@
-﻿var genPatients = function(seed, limit) {
+﻿var genPatients = function (seed, limit) {
 
     var items = [];
 
@@ -16,17 +16,17 @@
 
 
 var serverData1 = {
-    links: {
-        next: { href: '/api/patients/summaries?page=2' },
+    paging: {
+        next: 2,
         prev: null
     },
     items: genPatients(1, 10)
 };
 
 var serverData2 = {
-    links: {
-        prev: { href: '/api/patients/summaries?page=1' },
-        next: null
+    paging: {
+        next: null,
+        prev: 1
     },
     items: genPatients(11, 18)
 };
@@ -52,4 +52,20 @@ $.mockjax({
     responseText: serverData2
 });
 
+$.mockjax({
+    url: /^\/api\/patients\/([\d]+)$/,
+    responseTime: 150,
+    urlParams: ['id'],
+    response: function (settings) {
+        var id = settings.urlParams.id;
+       
+        this.responseText = {
+            id: id,
+            firstName: 'First',
+            lastName: 'Last ' + id,
+            email: 'email' + id + '@test.com',
+            pic: 'http://icons-search.com/img/yellowicon/game_star_lin.zip/Linux-Pacman_64x64.png-64x64.png',
 
+        };
+    }
+});

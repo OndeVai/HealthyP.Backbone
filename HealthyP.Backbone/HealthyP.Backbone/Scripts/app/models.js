@@ -4,35 +4,46 @@
     healthyP.PatientDetail = Backbone.Model.extend({
 
         urlRoot: '/api/patients',
-        url: function () {
-            return this.urlRoot + '/' + this.id + '/detail';
+        defaults: {
+            id: null,
+            firstName: null,
+            lastName: null,
+            email: null,
+            pic: null,
+
         }
+       
     });
     
     healthyP.PatientSummary = Backbone.Model.extend({
 
        
     });
-    
-    healthyP.PatientSummaries = Backbone.Collection.extend({
 
-        url: '/api/patients/summaries',
-        
-        initialize : function(models, options) {
-            options = options || {};
-            if (options.url)
-                this.url = options.url;
+    healthyP.PatientSummaries = Backbone.Collection.extend({
+        urlRoot: '/api/patients/summaries',
+        url: function() {
+            return this.page ? this.urlRoot + '?page=' + this.page : this.urlRoot;
+
         },
+        
+        initialize: function (models, options) {
+            
+            options = options || {};
+            if (options.page)
+                this.page = options.page;
+        },
+
         model: healthyP.PatientSummary,
         
-        getPagerLinks: function () {
-            var links = this._links;
-            return { prev: links['prev'], next: links['next'] };
+        getPaging: function () {
+            var paging = this._paging;
+            return { prev: paging['prev'], next: paging['next'] };
         },
 
         parse: function (data) {
             
-            this._links = data.links;
+            this._paging = data.paging;
             return data.items;
         }
     });

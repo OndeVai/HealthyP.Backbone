@@ -27,7 +27,10 @@ healthyP.views = healthyP.views || {};
     });
 
     healthyP.views.PatientDetail = healthyP.views.PatientSummary.extend({
-        
+        events: {            
+            
+        },
+        template: _.template($('#tmpl-patient-detail').html())
     });
 
 
@@ -38,9 +41,8 @@ healthyP.views = healthyP.views || {};
         template: _.template($('#tmpl-patient-summaries').html()),
         initialize: function(options) {
 
-            if (this.collection) {
+            if (this.collection)
                 this.listenTo(this.collection, 'refresh');
-            }
 
             _.bindAll(this, 'render', '_renderPaging', '_renderItem');
         },
@@ -64,7 +66,7 @@ healthyP.views = healthyP.views || {};
 
         _renderPaging: function() {
 
-            var paging = this.collection.getPagerLinks();
+            var paging = this.collection.getPaging();
 
             var $paging = this.$('.pager'),
                 $pagePrev = $paging.find('.previous'),
@@ -79,7 +81,7 @@ healthyP.views = healthyP.views || {};
             var $that = this;
             $that.enabled(pagerData);
             if(pagerData) 
-                $that.find('a').attr('href', '#patient-summaries' + pagerData.href);
+                $that.find('a').attr('href', '#patient-summaries/page-' + pagerData);
 
                 
            

@@ -26,7 +26,7 @@
             <img class="media-object" src="<%=pic%>">
         </a>
         <div class="media-body">
-            <h4 class="media-heading"> <a href="#patient/edit/<%=id%>"><%=name%> &raquo;</a></h4>
+            <h4 class="media-heading"> <a href="#patient/edit/<%=id%>" data-loader="true"><%=name%> &raquo;</a></h4>
             <p><%=desc%></p>
         </div>
     </div>
@@ -34,7 +34,7 @@
 
 <script type="text/template" id="tmpl-patient-summaries">
     <header class="page-header">
-        <h1>Patients <a class="btn btn-default  pull-right" href="#patient/edit"><i class="glyphicon glyphicon-plus"></i> Add</a></h1>
+        <h1>Patients <a class="btn btn-default  pull-right" href="#patient/edit" data-loader="true"><i class="glyphicon glyphicon-plus"></i> Add</a></h1>
     </header>
     <ul class="pager">
         <li class="previous disabled" data-loader="true"><a href="#">&larr; Older</a></li>
@@ -47,6 +47,75 @@
     </ul>
 </script>
 
-<script type="text/template" id="tmpl-comm-progress">
-   
+<script type="text/template" id="tmpl-patient-detail">
+    <ol class="breadcrumb">
+        <li><a href="#patient-summaries" data-loader="true">Patients</a></li>
+        <li class="active"><%=firstName%> <%=lastName%></li>
+    </ol>
+
+    <header>
+        <div class="page-header">
+            <h1><%=firstName%> <%=lastName%> - Details</h1>
+        </div>
+    </header>
+
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-3">
+                <label for="firstName" class="label-required">First Name</label>
+                <input type="text" required class="form-control" id="firstName" name="firstName" placeholder="First Name" value="<%=firstName%>" />
+            </div>
+            <div class="col-md-3">
+                <label for="lastName" class="label-required">Last Name</label>
+                <input type="text" required class="form-control" id="lastName" name="lastName" placeholder="Last Name" value="<%=lastName%>" />
+            </div>
+            <div class="col-md-4">
+                <label for="email" class="label-required">Email</label>
+                <input type="email" required class="form-control" id="email" name="email" placeholder="Email" value="<%=email%>" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="imageUrl" class="label-required">Image Url</label>
+                <input type="text" required class="form-control" id="imageUrl" name="imageUrl" placeholder="Image Url" value="<%=pic%>" />
+
+            </div>
+            <div class="col-md-1">
+                <label for="profilePreview" class="text-muted">(prev)</label>
+                <img id="profilePreview" class="profile-preview" src="<%=pic%>" />
+
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="clearfix"></div>
+            <div class="col-md-10">
+
+                <h3>Insurance <button class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</button></h3>
+                <p>(todo)</p>
+
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
+                                <th class="col-md-4"><a href="#">Date</a></th>
+                                <th class="col-md-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <ul class="pager">
+                    <li class="previous disabled"><a href="#">&larr; Older</a></li>
+                    <li class="next"><a href="#">Newer &rarr;</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-default btn-lg btn-primary">Submit</button>
+    </form>
+
 </script>

@@ -50,6 +50,12 @@ body.loading-main .cbody {
     opacity: 0;
 }
 
+label.label-required:after {
+    content: "*";
+    color: #b94a48;
+    font-weight: bold;
+}
+
 ul.patients li {
     margin-top: 15px;
 }

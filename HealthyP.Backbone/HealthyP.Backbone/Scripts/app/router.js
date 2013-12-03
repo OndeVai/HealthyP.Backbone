@@ -8,8 +8,10 @@ var healthyP = healthyP || {};
         routes: {
             '': 'showPatientSummaries',
             'patient/add': 'showPatientEdit',
+            'patient/edit': 'showPatientEdit',
             'patient/edit/:id': 'showPatientEdit',
-            'patient-summaries*url': 'showPatientSummaries'
+            'patient-summaries/page-:page': 'showPatientSummaries',
+            'patient-summaries': 'showPatientSummaries'
         },
 
         initialize: function () {
@@ -18,12 +20,11 @@ var healthyP = healthyP || {};
             });
         },
 
-        showPatientSummaries: function (url) {
+        showPatientSummaries: function (page) {
 
             var self = this;
-            var patientSummaries = new healthyP.PatientSummaries([], { url: url });
+            var patientSummaries = new healthyP.PatientSummaries([], { page: page });
 
-            console.log(patientSummaries.url);
             patientSummaries.fetch().done(function () {
                 var patientSummariesView = new healthyP.views.PatientSummaries({ collection: patientSummaries });
                 self._triggerRender(patientSummariesView);
@@ -39,7 +40,7 @@ var healthyP = healthyP || {};
             var triggerRender = function () {
                 var patientDetailView = new healthyP.views.PatientDetail({ model: patientDetail });
                 self._triggerRender(patientDetailView);
-
+                
             };
 
             id ? patientDetail.fetch().done(triggerRender) : triggerRender();
