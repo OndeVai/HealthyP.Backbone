@@ -31,9 +31,6 @@ var serverData2 = {
     items: genPatients(11, 18)
 };
 
-
-
-
 $.mockjax({
     url: '/api/patients/summaries',
     responseTime: 150,

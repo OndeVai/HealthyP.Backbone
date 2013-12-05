@@ -58,6 +58,37 @@
 
         });
     };
+
+    $.fn.validateForBootstrap = function (callback) {
+
+        var clsFormGroup = '.form-group', clsError = 'has-error', clsSuccess = 'success';
+
+        return this.each(function () {
+
+            var $that = $(this);
+            $that.validate({
+                errorClass: 'text-error help-block',
+                errorElement: 'span',
+                highlight: function (element) {
+                    $(element).closest(clsFormGroup).removeClass(clsSuccess).addClass(clsError);
+                },
+                success: function (element) {
+                    element
+                    .closest(clsFormGroup).removeClass(clsError).addClass(clsSuccess);
+                },
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.closest(clsFormGroup));
+                },
+                submitHandler: function () {
+                    return callback();
+                },
+                invalidHandler: function () {
+                    self.$(':submit').loading(false);
+                }
+            });
+
+        });
+    };
     
     $.parseJsonSafe = function (val) {
         try {
@@ -70,6 +101,8 @@
             return null;
         }
     };
+    
+
 
     //*****jquery ajax*******//
 

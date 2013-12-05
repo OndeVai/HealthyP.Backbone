@@ -187,6 +187,7 @@
     <Content Include="Scripts\app\router.js" />
     <Content Include="Scripts\app\views.js" />
     <Content Include="Scripts\backbone.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Content\site.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

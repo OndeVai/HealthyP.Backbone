@@ -37,17 +37,12 @@ body.loading-main .cbody {
     opacity: .5;
 }
 
-.cbody {
-    position: absolute;
-    width: 100%;
-}
-
 .cbody.in {
-    opacity: 1;
+    display: block;
 }
 
 .cbody.out {
-    opacity: 0;
+    display: none;
 }
 
 label.label-required:after {

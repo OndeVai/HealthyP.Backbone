@@ -59,26 +59,34 @@
         </div>
     </header>
 
-    <form role="form" class="form-horizontal">
-        <div class="form-group">
+    <form role="form">
+        <div class="row">
             <div class="col-md-3">
-                <label for="firstName" class="label-required">First Name</label>
-                <input type="text" required class="form-control" id="firstName" name="firstName" placeholder="First Name" value="<%=firstName%>" />
+                <div class="form-group">
+                    <label for="firstName" class="label-required">First Name</label>
+                    <input type="text" required class="form-control" id="firstName" name="firstName" placeholder="First Name" value="<%=firstName%>" />
+                </div>
             </div>
             <div class="col-md-3">
-                <label for="lastName" class="label-required">Last Name</label>
-                <input type="text" required class="form-control" id="lastName" name="lastName" placeholder="Last Name" value="<%=lastName%>" />
+                <div class="form-group">
+                    <label for="lastName" class="label-required">Last Name</label>
+                    <input type="text" required class="form-control" id="lastName" name="lastName" placeholder="Last Name" value="<%=lastName%>" />
+                </div>
             </div>
             <div class="col-md-4">
-                <label for="email" class="label-required">Email</label>
-                <input type="email" required class="form-control" id="email" name="email" placeholder="Email" value="<%=email%>" />
+                <div class="form-group">
+                    <label for="email" class="label-required">Email</label>
+                    <input type="email" required class="form-control" id="email" name="email" placeholder="Email" value="<%=email%>" />
+                </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-md-6">
-                <label for="imageUrl" class="label-required">Image Url</label>
-                <input type="text" required class="form-control" id="imageUrl" name="imageUrl" placeholder="Image Url" value="<%=pic%>" />
+                <div class="form-group">
+                    <label for="imageUrl" class="label-required">Image Url</label>
+                    <input type="text" required class="form-control" id="imageUrl" name="imageUrl" placeholder="Image Url" value="<%=pic%>" />
 
+                </div>
             </div>
             <div class="col-md-1">
                 <label for="profilePreview" class="text-muted">(prev)</label>
@@ -86,36 +94,40 @@
 
             </div>
         </div>
-        <div class="form-group">
-
-            <div class="clearfix"></div>
+        <div class="row">
             <div class="col-md-10">
+                <div class="form-group">
 
-                <h3>Insurance <button class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</button></h3>
-                <p>(todo)</p>
+                    <h3>Insurance <button class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</button></h3>
+                    <p>(todo)</p>
 
 
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
-                                <th class="col-md-4"><a href="#">Date</a></th>
-                                <th class="col-md-1"></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
+                                    <th class="col-md-4"><a href="#">Date</a></th>
+                                    <th class="col-md-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <ul class="pager">
+                        <li class="previous disabled"><a href="#">&larr; Older</a></li>
+                        <li class="next"><a href="#">Newer &rarr;</a></li>
+                    </ul>
                 </div>
 
-                <ul class="pager">
-                    <li class="previous disabled"><a href="#">&larr; Older</a></li>
-                    <li class="next"><a href="#">Newer &rarr;</a></li>
-                </ul>
             </div>
-
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default btn-lg btn-primary" value="Save"/>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-default btn-lg btn-primary">Submit</button>
     </form>
 
 </script>

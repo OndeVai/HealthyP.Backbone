@@ -12,6 +12,8 @@ healthyP.views = healthyP.views || {};
     });
 
     healthyP.views.PatientSummary = healthyP.views.BaseView.extend({
+        
+        tagName:'li',
         events: {
             
         },
@@ -26,11 +28,33 @@ healthyP.views = healthyP.views || {};
         }
     });
 
-    healthyP.views.PatientDetail = healthyP.views.PatientSummary.extend({
+    healthyP.views.PatientDetail = healthyP.views.BaseView.extend({
+        
+        initialize: function() {
+
+            _.bindAll(this, '_save');
+        },
         events: {            
             
         },
-        template: _.template($('#tmpl-patient-detail').html())
+        template: _.template($('#tmpl-patient-detail').html()),
+        
+        render: function () {
+
+            var modelJson = this.model.toJSON();
+            this.$el.html(this.template(modelJson));
+            this.$elForm = this.$('form');
+            this.$elForm.validateForBootstrap(this._save);
+
+          
+            return this;
+        },
+        
+        _save: function(e) {
+
+            alert('save');
+
+        }
     });
 
 
@@ -40,9 +64,6 @@ healthyP.views = healthyP.views || {};
         },
         template: _.template($('#tmpl-patient-summaries').html()),
         initialize: function(options) {
-
-            if (this.collection)
-                this.listenTo(this.collection, 'refresh');
 
             _.bindAll(this, 'render', '_renderPaging', '_renderItem');
         },
@@ -93,4 +114,4 @@ healthyP.views = healthyP.views || {};
     });
 
 
-})(window.jQuery, window._, window.Backbone, healthyP);
+}(window.jQuery, window._, window.Backbone, healthyP));
