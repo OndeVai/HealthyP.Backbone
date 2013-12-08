@@ -1,8 +1,10 @@
 ﻿var healthyP = healthyP || {};
 
 (function ($, _, Backbone, healthyP) {
-    
+
     //*****jquery plugins & extensions*******//
+
+    $.validator.setDefaults({ onfocusout: function (element) { $(element).valid(); } });
 
     var disabled = 'disabled';
     var loading = 'loading';
@@ -23,7 +25,7 @@
 
         });
     };
-    
+
     $.fn.loading = function (isLoading) {
 
 
@@ -89,7 +91,7 @@
 
         });
     };
-    
+
     $.parseJsonSafe = function (val) {
         try {
             var response = $.parseJSON(val);
@@ -101,7 +103,7 @@
             return null;
         }
     };
-    
+
 
 
     //*****jquery ajax*******//
@@ -184,9 +186,9 @@
 
 
     //*****bootstrap*******//
-    
+
     //fix the pager and other controls that are disabled
-    $(document).on('click touchstart', '.disabled, .disabled a', function(e) {
+    $(document).on('click touchstart', '.disabled, .disabled a', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
         e.stopPropagation();

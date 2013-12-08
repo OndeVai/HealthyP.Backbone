@@ -37,6 +37,10 @@ body.loading-main .cbody {
     opacity: .5;
 }
 
+#content {
+    margin-top: 15px;
+}
+
 .cbody.in {
     display: block;
 }
@@ -57,4 +61,9 @@ ul.patients li {
 
 .table tbody > tr > td.grid-actions {
     text-align: right;
+}
+
+img.mini-thumb {
+    width: 64px;
+    height: 64px;
 }

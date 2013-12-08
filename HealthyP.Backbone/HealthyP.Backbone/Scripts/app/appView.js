@@ -30,11 +30,12 @@ healthyP.views = healthyP.views || {};
 
     healthyP.views.App = Backbone.View.extend({
 
-        el: $('#wrapper'),
+        el: $('#wrapper'), //todo inject in initialize
 
         initialize: function () {
 
-            this.activePanel = this.$el.find('.cbody');
+            this.$activePanel = this.$el.find('.cbody');
+            this._pendingSuccesses = [];
 
             this.currentView = null;
 
@@ -48,6 +49,7 @@ healthyP.views = healthyP.views || {};
             this.listenTo(channel, 'app:comm:err:unauthorized', this._handleAuth);
             this.listenTo(channel, 'app:comm:err:notFound', this._renderNotFound);
             this.listenTo(channel, 'app:ui:success:custom', this._renderSuccessMessage);
+            this.listenTo(channel, 'app:ui:success:custom:pending', this._setPendingSuccess);
 
         },
 
@@ -67,8 +69,8 @@ healthyP.views = healthyP.views || {};
 
             this._setMainElements(view, newPanel);
 
-            var oldPanel = this.activePanel;
-            this.activePanel = newPanel;
+            var oldPanel = this.$activePanel;
+            this.$activePanel = newPanel;
 
             this._updatePanels(oldPanel, newPanel, oldPanelEnd, newPanelEnd, view);
             this._clearModal();
@@ -79,7 +81,7 @@ healthyP.views = healthyP.views || {};
 
 
             this._clearError();
-            this._clearSuccess();
+           
             $('body').addClass('loading-main');
             this.$el.find('[data-loader="true"]').loading(true);
         },
@@ -102,13 +104,24 @@ healthyP.views = healthyP.views || {};
             window.setTimeout(function () {
                 oldPanel.panelTransition(oldPanelEnd);
                 newPanel.panelTransition(newPanelEnd);
-                console.log(Modernizr);
-
+             
                 self._cleanupViews(view, newPanel, oldPanel);
 
+                newPanel
+                    .find('form')
+                    .first()
+                    .find(':input')
+                    .first()
+                    .focus();
 
+                var pendingSuccess = self._pendingSuccesses;
 
-            }, 0);
+                while (pendingSuccess.length > 0) {
+                    var msg = pendingSuccess.pop();
+                    self._renderSuccessMessage(msg);
+                }
+
+            }, 10);
         },
         _renderMessage: function (MessageView, model,  callback) {
 
@@ -153,6 +166,12 @@ healthyP.views = healthyP.views || {};
 
             this._clearSuccess();
             this._renderMessage(healthyP.views.MessageSuccess, msg);
+            this._scrollTop();
+        },
+        _setPendingSuccess: function(msg) {
+
+            this._pendingSuccesses.push(msg);
+
         },
         _clearError: function () {
             this.$('.error-gen').remove();
