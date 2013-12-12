@@ -22,7 +22,7 @@
 
 <script type="text/template" id="tmpl-patient-summary">
     <div class="media">
-        <a class="pull-left" >
+        <a class="pull-left">
             <img class="media-object  mini-thumb" src="<%=imageUrl%>">
         </a>
         <div class="media-body">
@@ -37,13 +37,13 @@
         <h1>Patients <a class="btn btn-default  pull-right" href="#patient/edit" data-loader="true"><i class="glyphicon glyphicon-plus"></i> Add</a></h1>
     </header>
     <ul class="pager">
-        <li class="previous disabled" data-loader="true"><a >&larr; Older</a></li>
-        <li class="next" data-loader="true"><a >Newer &rarr;</a></li>
+        <li class="previous disabled" data-loader="true"><a>&larr; Older</a></li>
+        <li class="next" data-loader="true"><a>Newer &rarr;</a></li>
     </ul>
     <ul class="list-unstyled patient-summaries"></ul>
     <ul class="pager">
-        <li class="previous disabled" data-loader="true"><a >&larr; Older</a></li>
-        <li class="next" data-loader="true"><a >Newer &rarr;</a></li>
+        <li class="previous disabled" data-loader="true"><a>&larr; Older</a></li>
+        <li class="next" data-loader="true"><a>Newer &rarr;</a></li>
     </ul>
 </script>
 
@@ -84,7 +84,7 @@
             <div class="col-md-11">
                 <div class="form-group">
                     <label for="imageUrl" class="label-required">Image Url</label>
-                    <input type="text" required class="form-control" id="imageUrl" name="imageUrl" placeholder="Image Url" value="<%=imageUrl%>"/>
+                    <input type="text" required class="form-control" id="imageUrl" name="imageUrl" placeholder="Image Url" value="<%=imageUrl%>" />
 
                 </div>
             </div>
@@ -107,25 +107,25 @@
                 <div class="form-group">
 
                     <h2 class="page-header">Insurance <a class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</a></h2>
-                    <p>(todo)</p>
-
 
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped payors">
                             <thead>
                                 <tr>
-                                    <th class="col-md-4"><a ><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
-                                    <th class="col-md-4"><a >Date</a></th>
+                                    <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
+                                    <th class="col-md-4"><a href="#">Date</a></th>
                                     <th class="col-md-1"></th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+
+                            </tbody>
                         </table>
                     </div>
 
                     <ul class="pager">
-                        <li class="previous disabled"><a >&larr; Older</a></li>
-                        <li class="next"><a >Newer &rarr;</a></li>
+                        <li class="previous disabled"><a>&larr; Older</a></li>
+                        <li class="next"><a>Newer &rarr;</a></li>
                     </ul>
                 </div>
 
@@ -137,5 +137,44 @@
             </div>
         </div>
     </form>
+
+</script>
+
+<script type="text/template" id="tmpl-payor-summary">
+    <td class="col-md-4"><%=name%></td>
+    <td class="col-md-4"><%=date%></td>
+    <td class="grid-actions"><a class="edit" href="edit" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; <a class="delete" href="delete"><i class="glyphicon glyphicon-remove"></i></a></td>
+</script>
+
+<script type="text/template" id="tmpl-payor-detail">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><%=title%></h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label> Payor</label>
+                        <input type="text" class="form-control" value="<%=name%>" />
+                    </div>
+                    <div class="form-group">
+                        <label> Date</label>
+                        <input type="text" class="form-control" value="<%=date%>" />
+                    </div>
+                    <div class="form-group">
+                        <label> Notes</label>
+                        <textarea class="form-control" rows="10"><%=notes%></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 
 </script>

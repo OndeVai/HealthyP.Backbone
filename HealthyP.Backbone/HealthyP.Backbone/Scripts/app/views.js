@@ -48,7 +48,13 @@ healthyP.views = healthyP.views || {};
             this.$elForm = this.$('form');
             this.$elForm.validateForBootstrap(this._save);
 
-           
+            var $elPayors = this.$elForm.find('.payors').find('tbody');
+            var payors = modelJson.payors;
+            _.each(payors, function(payor) {
+                var payorView = new healthyP.views.PayorSummary({ model: new Backbone.Model(payor) });
+                $elPayors.append(payorView.render().el);
+            });
+
 
             return this;
         },
@@ -99,6 +105,35 @@ healthyP.views = healthyP.views || {};
             return false;
 
         }
+    });
+    
+    healthyP.views.PayorSummary = healthyP.views.BaseView.extend({
+
+        tagName: 'tr',
+        events: {
+            "click .edit": "_edit",
+        },
+        template: _.template($('#tmpl-payor-summary').html()),
+        initialize: function (options) {
+
+            _.bindAll(this, 'render', '_edit');
+        },
+
+        render: function () {
+
+            var modelJson = this.model.toJSON();
+            this.$el.html(this.template(modelJson));
+
+            return this;
+        },
+        
+        _edit: function(e) {
+            e.preventDefault();
+            var editView = new healthyP.views.PayorDetail({ model: this.model });
+            editView.render();
+        }
+        
+
     });
 
 
@@ -157,5 +192,75 @@ healthyP.views = healthyP.views || {};
         }
     });
 
+    healthyP.views.PayorDetail = healthyP.views.BaseView.extend({
+
+        className: 'modal fadein',
+
+        initialize: function () {
+
+            _.bindAll(this, '_save');
+            this.listenTo(this.model, 'change:imageUrl', this._renderPreview);
+        },
+        events: {
+            
+        },
+        template: _.template($('#tmpl-payor-detail').html()),
+
+        render: function () {
+
+            var modelJson = this.model.toJSON();
+
+
+            modelJson.title = this.model.isNew() ? '(new payor)' : modelJson.name;
+            this.$el.html(this.template(modelJson));
+            this.$elForm = this.$('form');
+            this.$elForm.validateForBootstrap(this._save);
+
+            var self = this;
+            this.$el
+                .appendTo($('body'))
+                .modal('show')
+                .on('hidden.bs.modal', function() {
+                    self.close();
+                });
+
+            return this;
+        },
+
+
+        _setModelFromUI: function () {
+            //var $elForm = this.$elForm,
+            //    firstNameVal = $elForm.find('#firstName').val(),
+            //    lastNameVal = $elForm.find('#lastName').val(),
+            //    emailVal = $elForm.find('#email').val(),
+            //    imgUrlVal = $elForm.find('#imageUrl').val();
+
+            //var model = this.model;
+            //model.set('firstName', firstNameVal);
+            //model.set('lastName', lastNameVal);
+            //model.set('email', emailVal);
+            //model.set('imageUrl', imgUrlVal);
+
+        },
+        //todo image updates when field changes (model event)
+        _save: function () {
+
+            var wasNew = this.model.isNew();
+            this._setModelFromUI();
+            this.model.save().done(function () {
+
+                var message = 'Payor was ' + (wasNew ? 'created' : 'updated') + '.';
+                healthyP.channel.trigger('app:ui:success:custom:pending', {
+                    lead: 'Success!',
+                    message: message
+                });
+               
+            });
+
+            this.$el.modal('hide');
+            return false;
+
+        }
+    });
 
 }(window.jQuery, window._, window.Backbone, healthyP));
