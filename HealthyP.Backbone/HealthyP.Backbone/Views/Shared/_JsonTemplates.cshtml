@@ -105,30 +105,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
+                    <h2 class="page-header insuranceAfter">Insurance <a class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</a></h2>
 
-                    <h2 class="page-header">Insurance <a class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-plus-sign"></i> Add</a></h2>
-
-                    <div class="table-responsive">
-                        <table class="table table-striped payors">
-                            <thead>
-                                <tr>
-                                    <th class="col-md-4"><a href="#"><em>Payor <i class="glyphicon glyphicon-arrow-down"></i></em></a></th>
-                                    <th class="col-md-4"><a href="#">Date</a></th>
-                                    <th class="col-md-1"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <ul class="pager">
-                        <li class="previous disabled"><a>&larr; Older</a></li>
-                        <li class="next"><a>Newer &rarr;</a></li>
-                    </ul>
                 </div>
-
             </div>
             <div class="col-md-2">
                 <div class="form-group">
@@ -138,6 +117,19 @@
         </div>
     </form>
 
+</script>
+
+<script type="text/template" id="tmpl-payor-summaries">
+    <table class="table table-striped payors">
+        <thead>
+            <tr>
+                <th class="col-md-4"><a href="#" data-col="name">Payor</a></th>
+                <th class="col-md-4"><a href="#" data-col="date">Date</a></th>
+                <th class="col-md-1"></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </script>
 
 <script type="text/template" id="tmpl-payor-summary">

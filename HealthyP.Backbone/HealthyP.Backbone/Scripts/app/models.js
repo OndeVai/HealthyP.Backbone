@@ -21,6 +21,7 @@
     });
 
     healthyP.PatientSummaries = Backbone.Collection.extend({
+        comparator:'name',
         urlRoot: '/api/patients/summaries',
         url: function () {
             return this.page ? this.urlRoot + '?page=' + this.page : this.urlRoot;

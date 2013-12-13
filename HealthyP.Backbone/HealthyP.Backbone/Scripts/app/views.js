@@ -34,39 +34,38 @@ healthyP.views = healthyP.views || {};
             this.listenTo(this.model, 'change:imageUrl', this._renderPreview);
         },
         events: {
-            'keyup #imageUrl' : '_updateImageUrl'
+            'keyup #imageUrl': '_updateImageUrl'
         },
         template: _.template($('#tmpl-patient-detail').html()),
 
         render: function () {
 
             var modelJson = this.model.toJSON();
-            
-           
+
+
             modelJson.title = this.model.isNew() ? '(new patient)' : modelJson.title;
             this.$el.html(this.template(modelJson));
             this.$elForm = this.$('form');
             this.$elForm.validateForBootstrap(this._save);
 
-            var $elPayors = this.$elForm.find('.payors').find('tbody');
-            var payors = modelJson.payors;
-            _.each(payors, function(payor) {
-                var payorView = new healthyP.views.PayorSummary({ model: new Backbone.Model(payor) });
-                $elPayors.append(payorView.render().el);
-            });
+            this.collPayors = new Backbone.Collection(modelJson.payors);
+            var payorView = new healthyP.views.PayorSummaries({ collection: this.collPayors });
+            this.$elForm
+                .find('.insuranceAfter')
+                .after(payorView.render().el);
 
 
             return this;
         },
-        
-        _renderPreview : function() {
+
+        _renderPreview: function () {
 
             var imageUrl = this.model.get('imageUrl');
             this.$('#profilePreview').attr('src', imageUrl);
 
         },
 
-        _updateImageUrl: function() {
+        _updateImageUrl: function () {
 
             var imageUrl = this.$('#imageUrl').val();
             this.model.set('imageUrl', imageUrl);
@@ -106,7 +105,7 @@ healthyP.views = healthyP.views || {};
 
         }
     });
-    
+
     healthyP.views.PayorSummary = healthyP.views.BaseView.extend({
 
         tagName: 'tr',
@@ -126,16 +125,15 @@ healthyP.views = healthyP.views || {};
 
             return this;
         },
-        
-        _edit: function(e) {
+
+        _edit: function (e) {
             e.preventDefault();
             var editView = new healthyP.views.PayorDetail({ model: this.model });
             editView.render();
         }
-        
+
 
     });
-
 
     healthyP.views.PatientSummaries = healthyP.views.BaseView.extend({
         events: {
@@ -192,6 +190,83 @@ healthyP.views = healthyP.views || {};
         }
     });
 
+    healthyP.views.PayorSummaries = healthyP.views.BaseView.extend({
+
+        className: 'table-responsive',
+        events: {
+            "click [data-col]": "_sort",
+        },
+        template: _.template($('#tmpl-payor-summaries').html()),
+        initialize: function (options) {
+
+            this.sorting = {
+                templateUp: '<i class="glyphicon glyphicon-arrow-up"></i>',
+                templateDown: '<i class="glyphicon glyphicon-arrow-down"></i>',
+                dataColSelector: '[data-col]'
+            };
+
+            _.bindAll(this, 'render', '_renderItem', '_renderItems');
+
+            this.listenTo(this.collection, 'sort', this._renderItems);
+        },
+        render: function () {
+
+            this.$el.html(this.template({}));
+            this.$elList = this.$('.payors').find('tbody');
+
+            this.$elColls = this.$(this.sorting.dataColSelector);
+            this._renderItems();
+
+
+
+            return this;
+        },
+
+        _renderItem: function (payor) {
+
+            var payorView = new healthyP.views.PayorSummary({ model: payor });
+            this.$elList.append(payorView.render().el);
+        },
+
+        _renderItems: function () {
+
+            this.$elList.empty();
+            this.collection.each(this._renderItem);
+        },
+
+
+        _sort: function (e) {
+            e.preventDefault();
+            var $elCol = $(e.target).closest(this.sorting.dataColSelector);
+            this.$elColls.find('.glyphicon').remove();
+
+            var isDesc = false;
+            var currentCol = $elCol.data('col');
+            var collection = this.collection;
+            var collSorting = collection.sorting;
+            if (collSorting && collSorting.col === currentCol) {
+                isDesc = !collSorting.desc;
+            }
+
+            collection.sorting = { col: currentCol, desc: isDesc };
+
+            var template = isDesc ? this.sorting.templateUp : this.sorting.templateDown;
+            $elCol.append(template);
+
+            var comparison1 = isDesc ? 1 : -1;
+            var comparison2 = isDesc ? -1 : 1;
+
+            collection.comparator = function (payorA, payorB) {
+                if (payorA.get(currentCol) > payorB.get(currentCol)) return comparison1; // before
+                if (payorB.get(currentCol) > payorA.get(currentCol)) return comparison2; // after
+                return 0; // equal
+
+            };
+            collection.sort();
+        }
+
+    });
+
     healthyP.views.PayorDetail = healthyP.views.BaseView.extend({
 
         className: 'modal fadein',
@@ -202,7 +277,7 @@ healthyP.views = healthyP.views || {};
             this.listenTo(this.model, 'change:imageUrl', this._renderPreview);
         },
         events: {
-            
+
         },
         template: _.template($('#tmpl-payor-detail').html()),
 
@@ -220,7 +295,7 @@ healthyP.views = healthyP.views || {};
             this.$el
                 .appendTo($('body'))
                 .modal('show')
-                .on('hidden.bs.modal', function() {
+                .on('hidden.bs.modal', function () {
                     self.close();
                 });
 
@@ -254,7 +329,7 @@ healthyP.views = healthyP.views || {};
                     lead: 'Success!',
                     message: message
                 });
-               
+
             });
 
             this.$el.modal('hide');
