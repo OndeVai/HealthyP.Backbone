@@ -75,6 +75,11 @@ $.mockjax({
         var both = serverData1.items.concat(serverData2.items);
         var item = _.find(both, function (itm) { return itm.id == id; });
 
+        if (!item) {
+            this.status = 404;
+            this.responseText = "The requested resource was not found";
+        }
+
         this.responseText = item;
     }
 });

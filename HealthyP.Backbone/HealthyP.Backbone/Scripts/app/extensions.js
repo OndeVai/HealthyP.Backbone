@@ -196,6 +196,52 @@
 
 
     //*****backbone*******//
+
+    Backbone.Collection.prototype.createDetached = function () {
+        var newModel = new this.model();
+        newModel.collection = this;
+        return newModel;
+    };
+
+
+    //fix issue where change event not triggering sort if comparator set
+    var oldFunc = Backbone.Collection.prototype._onModelEvent;
+    Backbone.Collection.prototype._onModelEvent = function (event, model, collection, options) {
+
+        if (event === 'change' && this.comparator) {
+            this.sort();
+            return;
+        }
+
+        oldFunc.apply(this, arguments);
+    };
+
+    Backbone.Collection.prototype.sortByToggle = function(options) {
+        
+        var fieldToSortBy = options.fieldToSortBy;
+
+        var isDesc = false;
+        var collSorting = this.sorting;
+        if (collSorting && collSorting.col === fieldToSortBy) {
+            isDesc = !collSorting.desc;
+        }
+
+        var comparison1 = isDesc ? 1 : -1,
+            comparison2 = isDesc ? -1 : 1;
+
+        this.sorting = { col: fieldToSortBy, desc: isDesc };
+        
+        this.comparator = function (modelA, modelB) {
+            if (modelA.get(fieldToSortBy) > modelB.get(fieldToSortBy)) return comparison1; // before
+            if (modelB.get(fieldToSortBy) > modelA.get(fieldToSortBy)) return comparison2; // after
+            return 0; // equal
+
+        };
+        return this.sort();
+
+    };
+
+
     Backbone.Router.prototype.trackPageView = function (account) {
 
         var ga = window._gaq || [];

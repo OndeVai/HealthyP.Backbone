@@ -48,11 +48,11 @@ healthyP.views = healthyP.views || {};
             this.$elForm = this.$('form');
             this.$elForm.validateForBootstrap(this._save);
 
-            this.collPayors = new Backbone.Collection(modelJson.payors);
+            this.collPayors = new healthyP.Payors(modelJson.payors);
             var payorView = new healthyP.views.PayorSummaries({ collection: this.collPayors });
             this.$elForm
-                .find('.insuranceAfter')
-                .after(payorView.render().el);
+                .find('.payorsView')
+                .append(payorView.render().el);
 
 
             return this;
@@ -72,17 +72,15 @@ healthyP.views = healthyP.views || {};
         },
 
         _setModelFromUI: function () {
-            var $elForm = this.$elForm,
-                firstNameVal = $elForm.find('#firstName').val(),
-                lastNameVal = $elForm.find('#lastName').val(),
-                emailVal = $elForm.find('#email').val(),
-                imgUrlVal = $elForm.find('#imageUrl').val();
+            var $elForm = this.$elForm;
 
             var model = this.model;
-            model.set('firstName', firstNameVal);
-            model.set('lastName', lastNameVal);
-            model.set('email', emailVal);
-            model.set('imageUrl', imgUrlVal);
+            model.set({
+                firstName: $elForm.find('#firstName').val(),
+                lastname: $elForm.find('#lastName').val(),
+                email: $elForm.find('#email').val(),
+                imageUrl: $elForm.find('#imageUrl').val()
+            });
 
         },
         //todo image updates when field changes (model event)
@@ -106,34 +104,7 @@ healthyP.views = healthyP.views || {};
         }
     });
 
-    healthyP.views.PayorSummary = healthyP.views.BaseView.extend({
 
-        tagName: 'tr',
-        events: {
-            "click .edit": "_edit",
-        },
-        template: _.template($('#tmpl-payor-summary').html()),
-        initialize: function (options) {
-
-            _.bindAll(this, 'render', '_edit');
-        },
-
-        render: function () {
-
-            var modelJson = this.model.toJSON();
-            this.$el.html(this.template(modelJson));
-
-            return this;
-        },
-
-        _edit: function (e) {
-            e.preventDefault();
-            var editView = new healthyP.views.PayorDetail({ model: this.model });
-            editView.render();
-        }
-
-
-    });
 
     healthyP.views.PatientSummaries = healthyP.views.BaseView.extend({
         events: {
@@ -190,11 +161,49 @@ healthyP.views = healthyP.views || {};
         }
     });
 
+    healthyP.views.PayorSummary = healthyP.views.BaseView.extend({
+
+        tagName: 'tr',
+        events: {
+            'click .edit': '_edit',
+            'click .delete': '_remove'
+        },
+        template: _.template($('#tmpl-payor-summary').html()),
+        initialize: function (options) {
+
+            _.bindAll(this, 'render', '_edit', '_remove');
+        },
+
+        render: function () {
+
+            var modelJson = this.model.toJSON();
+            this.$el.html(this.template(modelJson));
+
+            return this;
+        },
+
+        _edit: function (e) {
+            e.preventDefault();
+            var editView = new healthyP.views.PayorDetail({ model: this.model });
+            editView.render();
+        },
+
+        _remove: function (e) {
+            e.preventDefault();
+            if (window.confirm('Are you sure you want to delete ' + this.model.name + '?')) {
+                this.model.collection.remove(this.model);
+            }
+        }
+
+
+    });
+
     healthyP.views.PayorSummaries = healthyP.views.BaseView.extend({
 
-        className: 'table-responsive',
+        className: 'form-group',
         events: {
-            "click [data-col]": "_sort",
+            'click [data-col]': '_sort',
+            'click .add': '_add'
         },
         template: _.template($('#tmpl-payor-summaries').html()),
         initialize: function (options) {
@@ -205,9 +214,12 @@ healthyP.views = healthyP.views || {};
                 dataColSelector: '[data-col]'
             };
 
-            _.bindAll(this, 'render', '_renderItem', '_renderItems');
+            _.bindAll(this, 'render', '_renderItem', '_renderItems', '_add');
 
-            this.listenTo(this.collection, 'sort', this._renderItems);
+            this.listenTo(this.collection, 'sort', this._renderItems); //todo consolidate
+            this.listenTo(this.collection, 'remove', this._renderItems);
+            this.listenTo(this.collection, 'add', this._renderItems);
+            this.listenTo(this.collection, 'change', this._renderItems);
         },
         render: function () {
 
@@ -222,62 +234,57 @@ healthyP.views = healthyP.views || {};
             return this;
         },
 
+        _add: function (e) {
+
+            e.preventDefault();
+            var newPayor = this.collection.createDetached();
+            var editView = new healthyP.views.PayorDetail({ model: newPayor });
+            editView.render();
+        },
+
         _renderItem: function (payor) {
 
+           
             var payorView = new healthyP.views.PayorSummary({ model: payor });
             this.$elList.append(payorView.render().el);
         },
 
         _renderItems: function () {
-
+            console.log('rrrr');
             this.$elList.empty();
             this.collection.each(this._renderItem);
         },
 
 
         _sort: function (e) {
+
             e.preventDefault();
-            var $elCol = $(e.target).closest(this.sorting.dataColSelector);
+
+            var sorting = this.sorting;
+            var $elCol = $(e.target).closest(sorting.dataColSelector);
             this.$elColls.find('.glyphicon').remove();
 
-            var isDesc = false;
-            var currentCol = $elCol.data('col');
-            var collection = this.collection;
-            var collSorting = collection.sorting;
-            if (collSorting && collSorting.col === currentCol) {
-                isDesc = !collSorting.desc;
-            }
+            var currentCol = $elCol.data('col'),
+                 collection = this.collection;
 
-            collection.sorting = { col: currentCol, desc: isDesc };
+            collection.sortByToggle({ fieldToSortBy: currentCol });
 
-            var template = isDesc ? this.sorting.templateUp : this.sorting.templateDown;
+            var template = collection.sorting.desc ? sorting.templateUp : sorting.templateDown;
             $elCol.append(template);
 
-            var comparison1 = isDesc ? 1 : -1;
-            var comparison2 = isDesc ? -1 : 1;
-
-            collection.comparator = function (payorA, payorB) {
-                if (payorA.get(currentCol) > payorB.get(currentCol)) return comparison1; // before
-                if (payorB.get(currentCol) > payorA.get(currentCol)) return comparison2; // after
-                return 0; // equal
-
-            };
-            collection.sort();
         }
 
     });
 
     healthyP.views.PayorDetail = healthyP.views.BaseView.extend({
-
         className: 'modal fadein',
 
         initialize: function () {
 
-            _.bindAll(this, '_save');
-            this.listenTo(this.model, 'change:imageUrl', this._renderPreview);
+            _.bindAll(this, '_save', '_submit');
         },
         events: {
-
+            'click :submit': '_submit'
         },
         template: _.template($('#tmpl-payor-detail').html()),
 
@@ -299,38 +306,35 @@ healthyP.views = healthyP.views || {};
                     self.close();
                 });
 
+            this.$elForm.find(':input').first().focus();
+
             return this;
         },
 
+        _submit: function (e) {
+            e.preventDefault();
+            this.$elForm.submit();
+        },
 
         _setModelFromUI: function () {
-            //var $elForm = this.$elForm,
-            //    firstNameVal = $elForm.find('#firstName').val(),
-            //    lastNameVal = $elForm.find('#lastName').val(),
-            //    emailVal = $elForm.find('#email').val(),
-            //    imgUrlVal = $elForm.find('#imageUrl').val();
+            var $elForm = this.$elForm;
 
-            //var model = this.model;
-            //model.set('firstName', firstNameVal);
-            //model.set('lastName', lastNameVal);
-            //model.set('email', emailVal);
-            //model.set('imageUrl', imgUrlVal);
+            var model = this.model;
+            model.set({
+                name: $elForm.find('#name').val(),
+                date: $elForm.find('#date').val(),
+                notes: $elForm.find('#notes').val()
+            });
 
         },
-        //todo image updates when field changes (model event)
         _save: function () {
 
             var wasNew = this.model.isNew();
             this._setModelFromUI();
-            this.model.save().done(function () {
 
-                var message = 'Payor was ' + (wasNew ? 'created' : 'updated') + '.';
-                healthyP.channel.trigger('app:ui:success:custom:pending', {
-                    lead: 'Success!',
-                    message: message
-                });
-
-            });
+            if (wasNew) {
+                this.model.collection.add(this.model);
+            }
 
             this.$el.modal('hide');
             return false;

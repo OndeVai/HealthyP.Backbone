@@ -15,13 +15,30 @@
 
     });
 
+    healthyP.Payor = Backbone.Model.extend({
+
+        defaults: {
+            id: null,
+            name: null,
+            date: null,
+            notes: null
+        }
+
+    });
+
+
+    healthyP.Payors = Backbone.Collection.extend({
+
+        model: healthyP.Payor
+
+    });
+
     healthyP.PatientSummary = Backbone.Model.extend({
 
 
     });
 
     healthyP.PatientSummaries = Backbone.Collection.extend({
-        comparator:'name',
         urlRoot: '/api/patients/summaries',
         url: function () {
             return this.page ? this.urlRoot + '?page=' + this.page : this.urlRoot;
