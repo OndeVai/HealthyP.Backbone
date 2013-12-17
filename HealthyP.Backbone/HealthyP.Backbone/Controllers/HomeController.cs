@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace HealthyP.Backbone.Controllers
 {
@@ -12,10 +8,7 @@ namespace HealthyP.Backbone.Controllers
         {
             return View();
         }
-        public ActionResult TempDetail()
-        {
-            return View();
-        }
+        
 
     }
 }

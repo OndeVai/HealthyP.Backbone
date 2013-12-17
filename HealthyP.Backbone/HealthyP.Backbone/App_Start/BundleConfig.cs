@@ -21,6 +21,10 @@ namespace HealthyP.Backbone
                         "~/Scripts/underscore.js",
                         "~/Scripts/backbone.js",
                         "~/Scripts/bootstrap.js",
+                        "~/Scripts/bootstrap-datepicker.js",
+                        "~/Scripts/bootstrap-datepicker.cultures.js",
+                        "~/Scripts/globalize.js",
+                        "~/Scripts/globalize.cultures.js",
                         "~/Scripts/app/extensions.js"
                        
 
@@ -42,6 +46,7 @@ namespace HealthyP.Backbone
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-datepicker.css",
                       "~/Content/site.css"));
         }
     }

@@ -16,11 +16,17 @@
             lastName: lastName,
             email: email,
             imageUrl: 'http://icons-search.com/img/yellowicon/game_star_lin.zip/Linux-Pacman_64x64.png-64x64.png',
-            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac pharetra velit, a dictum massa. Fusce fermentum urna at ligula porta, tristique ornare augue adipiscing. Sed ac ornare tortor. Donec non tortor facilisis, lobortis sapien et, ultrices erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor, turpis eu sodales elementum, nisi odio congue arcu, iaculis aliquam est lacus in nibh. Etiam tortor elit, vehicula a mi in, dictum auctor erat. In vulputate vehicula velit eu pretium. Sed vehicula pulvinar enim eu sagittis. Cras vulputate est libero, in blandit lacus fringilla eget. Phasellus pulvinar, dolor eget venenatis vulputate, urna eros luctus lorem, nec fermentum enim ipsum nec turpis. Sed vulputate elit purus, vitae tempor nunc fringilla id.',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac pharetra velit, a dictum massa. ' +
+                'Fusce fermentum urna at ligula porta, tristique ornare augue adipiscing. Sed ac ornare tortor. Donec non tortor facilisis, ' +
+                'lobortis sapien et, ultrices erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor, turpis eu sodales ' +
+                'elementum, nisi odio congue arcu, iaculis aliquam est lacus in nibh. Etiam tortor elit, vehicula a mi in, dictum auctor erat. ' +
+                'In vulputate vehicula velit eu pretium. Sed vehicula pulvinar enim eu sagittis. Cras vulputate est libero, in blandit lacus ' +
+                'fringilla eget. Phasellus pulvinar, dolor eget venenatis vulputate, urna eros luctus lorem, nec fermentum enim ipsum nec turpis. ' +
+                'Sed vulputate elit purus, vitae tempor nunc fringilla id.',
             payors: [
-                { id: 2, name: 'payor1', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date:'12/12/2001' },
+                { id: 2, name: 'payor1', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date: '12/12/2001' },
                 { id: 4, name: 'payor2', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date: '12/12/2002' },
-                { id: 5, name: 'payo3', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date: '12/12/2003' },
+                { id: 5, name: 'payor3', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date: '12/12/2003' },
                 { id: 6, name: 'payor4', notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing', date: '12/12/2004' }
             ]
         });

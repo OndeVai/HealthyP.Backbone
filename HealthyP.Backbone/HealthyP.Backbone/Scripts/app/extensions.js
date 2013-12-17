@@ -3,8 +3,23 @@
 (function ($, _, Backbone, healthyP) {
 
     //*****jquery plugins & extensions*******//
-
-    $.validator.setDefaults({ onfocusout: function (element) { $(element).valid(); } });
+    
+    //global date validation
+    Globalize.culture('es');
+    var currCultureDate = Globalize.culture().calendars.standard;
+    $.fn.datepicker.dates['es'] = {
+        days: currCultureDate.days.names,
+        daysShort: currCultureDate.days.namesAbbr,
+        daysMin: currCultureDate.days.namesAbbr,
+        months: currCultureDate.months.names,
+        monthsShort: currCultureDate.months.namesAbbr,
+        format : currCultureDate.patterns.d.toLowerCase()
+    };
+    $.fn.datepicker.defaults.language = 'es';
+    
+    $.validator.methods.date = function (value, element) {
+        return this.optional(element) || Globalize.parseDate(value);
+    };
 
     var disabled = 'disabled';
     var loading = 'loading';
@@ -61,14 +76,16 @@
         });
     };
 
-    $.fn.validateForBootstrap = function (callback) {
 
+    
+    $.fn.validateForBootstrap = function (callback, options) {
+        options = options || {};
         var clsFormGroup = '.form-group', clsError = 'has-error', clsSuccess = 'success';
 
         return this.each(function () {
 
             var $that = $(this);
-            $that.validate({
+            var defaults = {
                 errorClass: 'text-error help-block',
                 errorElement: 'span',
                 highlight: function (element) {
@@ -76,7 +93,7 @@
                 },
                 success: function (element) {
                     element
-                    .closest(clsFormGroup).removeClass(clsError).addClass(clsSuccess);
+                        .closest(clsFormGroup).removeClass(clsError).addClass(clsSuccess);
                 },
                 errorPlacement: function (error, element) {
                     error.appendTo(element.closest(clsFormGroup));
@@ -87,7 +104,11 @@
                 invalidHandler: function () {
                     self.$(':submit').loading(false);
                 }
-            });
+            };
+
+            var thisOptions = $.extend({}, defaults, options);
+
+            $that.validate(thisOptions);
 
         });
     };

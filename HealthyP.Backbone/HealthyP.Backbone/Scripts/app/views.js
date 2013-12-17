@@ -3,13 +3,7 @@ healthyP.views = healthyP.views || {};
 
 (function ($, _, Backbone, healthyP) {
 
-
-    //todo get rid of this and just pass constants (those can be mocked)
-    healthyP.views.BaseView = Backbone.View.extend({
-
-    });
-
-    healthyP.views.PatientSummary = healthyP.views.BaseView.extend({
+    healthyP.views.PatientSummary = Backbone.View.extend({
 
         tagName: 'li',
         events: {
@@ -26,7 +20,7 @@ healthyP.views = healthyP.views || {};
         }
     });
 
-    healthyP.views.PatientDetail = healthyP.views.BaseView.extend({
+    healthyP.views.PatientDetail = Backbone.View.extend({
 
         initialize: function () {
 
@@ -79,11 +73,11 @@ healthyP.views = healthyP.views || {};
                 firstName: $elForm.find('#firstName').val(),
                 lastname: $elForm.find('#lastName').val(),
                 email: $elForm.find('#email').val(),
-                imageUrl: $elForm.find('#imageUrl').val()
+                imageUrl: $elForm.find('#imageUrl').val(),
+                payors: this.collPayors.toJSON()
             });
-
         },
-        //todo image updates when field changes (model event)
+        
         _save: function () {
 
             var wasNew = this.model.isNew();
@@ -95,7 +89,7 @@ healthyP.views = healthyP.views || {};
                     lead: 'Success!',
                     message: message
                 });
-                document.location = '#/patient-summaries'; //todo make this more of a constants lib??
+                document.location = '#/patient-summaries'; 
 
             });
 
@@ -106,7 +100,7 @@ healthyP.views = healthyP.views || {};
 
 
 
-    healthyP.views.PatientSummaries = healthyP.views.BaseView.extend({
+    healthyP.views.PatientSummaries = Backbone.View.extend({
         events: {
 
         },
@@ -119,8 +113,6 @@ healthyP.views = healthyP.views || {};
 
             this.$el.html(this.template({}));
             this.$elList = this.$('.patient-summaries');
-
-
             this.collection.each(this._renderItem);
             this._renderPaging();
 
@@ -151,17 +143,10 @@ healthyP.views = healthyP.views || {};
             $that.enabled(pagerData);
             if (pagerData)
                 $that.find('a').attr('href', '#patient-summaries/page-' + pagerData);
-
-
-
-        },
-
-        _refresh: function () {
-
         }
     });
 
-    healthyP.views.PayorSummary = healthyP.views.BaseView.extend({
+    healthyP.views.PayorSummary = Backbone.View.extend({
 
         tagName: 'tr',
         events: {
@@ -198,7 +183,7 @@ healthyP.views = healthyP.views || {};
 
     });
 
-    healthyP.views.PayorSummaries = healthyP.views.BaseView.extend({
+    healthyP.views.PayorSummaries = Backbone.View.extend({
 
         className: 'form-group',
         events: {
@@ -229,8 +214,6 @@ healthyP.views = healthyP.views || {};
             this.$elColls = this.$(this.sorting.dataColSelector);
             this._renderItems();
 
-
-
             return this;
         },
 
@@ -244,7 +227,7 @@ healthyP.views = healthyP.views || {};
 
         _renderItem: function (payor) {
 
-           
+
             var payorView = new healthyP.views.PayorSummary({ model: payor });
             this.$elList.append(payorView.render().el);
         },
@@ -276,7 +259,7 @@ healthyP.views = healthyP.views || {};
 
     });
 
-    healthyP.views.PayorDetail = healthyP.views.BaseView.extend({
+    healthyP.views.PayorDetail = Backbone.View.extend({
         className: 'modal fadein',
 
         initialize: function () {
@@ -291,13 +274,20 @@ healthyP.views = healthyP.views || {};
         render: function () {
 
             var modelJson = this.model.toJSON();
-
-
             modelJson.title = this.model.isNew() ? '(new payor)' : modelJson.name;
             this.$el.html(this.template(modelJson));
             this.$elForm = this.$('form');
-            this.$elForm.validateForBootstrap(this._save);
-
+            var $elForm = this.$elForm;
+            $elForm
+                .validateForBootstrap(this._save, {
+                    rules: {
+                        payorDate: {
+                            date:true
+                        }
+                    }
+                });
+            
+            $elForm.find('#date').datepicker({ autoclose: true });
             var self = this;
             this.$el
                 .appendTo($('body'))
@@ -306,7 +296,13 @@ healthyP.views = healthyP.views || {};
                     self.close();
                 });
 
-            this.$elForm.find(':input').first().focus();
+            $elForm.find(':input').first().focus();
+
+            
+         
+               
+
+            
 
             return this;
         },
