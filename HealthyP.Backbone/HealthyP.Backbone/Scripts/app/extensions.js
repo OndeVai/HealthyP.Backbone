@@ -10,7 +10,7 @@
     $.fn.datepicker.dates['es'] = {
         days: currCultureDate.days.names,
         daysShort: currCultureDate.days.namesAbbr,
-        daysMin: currCultureDate.days.namesAbbr,
+        daysMin: currCultureDate.days.namesShort,
         months: currCultureDate.months.names,
         monthsShort: currCultureDate.months.namesAbbr,
         format : currCultureDate.patterns.d.toLowerCase()
